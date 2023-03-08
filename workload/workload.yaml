@@ -13,6 +13,8 @@ spec:
         edge: "true"
       environment: dev
       manifests:
+        storage: git
+        type: kustomize            
         repo: https://github.com/eedorenko/kalypso-oci-app-gitops
         branch: dev
         path: ./functional-test
@@ -22,6 +24,8 @@ spec:
         edge: "false"
       environment: dev
       manifests:
+        storage: git
+        type: kustomize            
         repo: https://github.com/eedorenko/kalypso-oci-app-gitops
         branch: dev
         path: ./performance-test
@@ -30,6 +34,8 @@ spec:
         purpose: uat-test
       environment: stage
       manifests:
+        storage: git
+        type: kustomize            
         repo: https://github.com/eedorenko/kalypso-oci-app-gitops
         branch: stage
         path: ./uat-test                 
