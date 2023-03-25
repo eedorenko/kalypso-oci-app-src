@@ -38,7 +38,7 @@ jobs:
         push: true
         context: .
         tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}, ${{ env.IMAGE_NAME }}:latest  
-    - name: Build and push a debian package
+    - name: Build debian package
       run: |
         containerID=$(docker run -dt $IMAGE_NAME:$IMAGE_TAG)
         docker cp $containerID:/opt/app/sample .
@@ -46,15 +46,15 @@ jobs:
         containerID=$(docker run --platform linux/x86_64 -dt fpm)
         mkdir -p package
         docker cp $containerID:/deb-package/*.deb ./package/
-    outputs:
-        image_tag: ${{ steps.generate_image_tag.outputs.image_tag }}
-
-    - name: Deploy 🚀
+    - name: Publish debian package
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: package
           branch: packages
           target-folder: .
+    outputs:
+        image_tag: ${{ steps.generate_image_tag.outputs.image_tag }}
+
 
   Deploy_To_Dev:
       runs-on: ubuntu-latest
