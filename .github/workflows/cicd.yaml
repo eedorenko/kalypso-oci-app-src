@@ -52,6 +52,7 @@ jobs:
         folder: package
         branch: packages
         target-folder: .
+        clean: false
     outputs:
         image_tag: ${{ steps.generate_image_tag.outputs.image_tag }}
 
