@@ -47,11 +47,11 @@ jobs:
         mkdir -p package
         docker cp $containerID:/deb-package/*.deb ./package/
     - name: Publish debian package
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: package
-          branch: packages
-          target-folder: .
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: package
+        branch: packages
+        target-folder: .
     outputs:
         image_tag: ${{ steps.generate_image_tag.outputs.image_tag }}
 
