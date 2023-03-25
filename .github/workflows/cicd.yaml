@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - eedorenko/ansible
   workflow_dispatch:
 
 env:
@@ -37,6 +38,11 @@ jobs:
         push: true
         context: .
         tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}, ${{ env.IMAGE_NAME }}:latest  
+    - name: Build a debian package
+      run: |
+        containerID=$(docker run -dt $IMAGE_NAME:$IMAGE_TAG)
+        docker cp $containerID:/opt/app/sample .
+        docker build --platform linux/x86_64 --build-arg  version_string=$IMAGE_TAG --build-arg binary_name=sample --build-arg deb_package_name=hello-world --build-arg deb_package_description="Hello World Application" -t fpm -f Dockerfile-fpm .
     outputs:
         image_tag: ${{ steps.generate_image_tag.outputs.image_tag }}
 
