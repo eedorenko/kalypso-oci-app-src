@@ -11,7 +11,7 @@ env:
   SEM_VER: 0.0.1
   APP_NAME: hello-world
   IMAGE_NAME: ghcr.io/${{ github.repository }}/hello-world
-  PACKAGE_STORAGE_BASE_URL: https://${{ github.repository.owner }}.github.io/${{ github.event.repository.name }}
+  PACKAGE_STORAGE_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
 
 jobs:
   Build_Push_Image:
@@ -121,9 +121,22 @@ jobs:
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
           VERSION=$IMAGE_TAG
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Read Package Name
+        run: |
+          PACKAGE_NAME=${{ needs.Build_Push_Image.outputs.package_name }}          
+          echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
+          PACKAGE_STORAGE_URL=$PACKAGE_STORAGE_BASE_URL/$PACKAGE_NAME  
+          echo "PACKAGE_STORAGE_URL=$PACKAGE_STORAGE_URL" >> $GITHUB_ENV
       - name: Generate Manifests for UAT
         run: |
           .github/workflows/utils/generate-manifests.sh ${{ github.workspace }}/helm ${{ github.workspace }}/configs/uat-tests manifests/uat-test 
+      - name: Generate Manifests for Integration Tests
+        run: |
+          .github/workflows/utils/generate-ansible-manifests.sh ${{ github.workspace }}/ansible manifests/int-test 
+          cp ${{ github.workspace }}/configs/int-tests/* manifests/int-test/
+        env:
+          CONFIG_FILE: app-config.sh
+          COMMAND: sample          
       - name: Create PR
         run: |        
           .github/workflows/utils//create-pr.sh -s ${{ github.workspace }}/manifests -d . -r ${{ secrets.MANIFESTS_REPO }} -b stage -i ${{ github.run_number }} -t ${{ secrets.MANIFESTS_TOKEN }}  -m N
