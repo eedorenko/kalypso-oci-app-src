@@ -29,6 +29,16 @@ spec:
         repo: https://github.com/eedorenko/kalypso-oci-app-gitops
         branch: dev
         path: ./performance-test
+    - name: int-test
+      labels:
+        purpose: int-test
+      environment: dev
+      manifests:
+        storage: git
+        type: ansible            
+        repo: https://github.com/eedorenko/kalypso-oci-app-gitops
+        branch: dev
+        path: ./int-test
     - name: uat-test
       labels:
         purpose: uat-test
