@@ -38,7 +38,7 @@ spec:
         type: ansible            
         repo: https://github.com/eedorenko/kalypso-oci-app-gitops
         branch: dev
-        path: ./int-test
+        path: ./int-test/install.yml
     - name: uat-test
       labels:
         purpose: uat-test
