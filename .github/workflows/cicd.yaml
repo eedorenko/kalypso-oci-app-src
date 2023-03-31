@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - eedorenko/ansible
   workflow_dispatch:
 
 env:
