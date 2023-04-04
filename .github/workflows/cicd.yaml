@@ -56,6 +56,9 @@ jobs:
         branch: packages
         target-folder: .
         clean: false
+    - name: Wait for package to be available
+      run: sleep 15s
+      shell: bash
     outputs:
         image_tag: ${{ steps.generate_image_tag.outputs.image_tag }}
         package_name: ${{ steps.build_debian_package.outputs.package_name }}
