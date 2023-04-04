@@ -72,9 +72,6 @@ jobs:
         with:
           ref: dev-configs
           path: configs        
-      - name: Wait for package to be available
-        run: sleep 20s
-        shell: bash
       - name: Read Image Tags
         run: |
           IMAGE_TAG=${{ needs.Build_Push_Image.outputs.image_tag }}          
@@ -103,7 +100,7 @@ jobs:
 
       - name: Create PR
         run: |        
-          .github/workflows/utils//create-pr.sh -s ${{ github.workspace }}/manifests -d . -r ${{ secrets.MANIFESTS_REPO }} -b dev -i ${{ github.run_number }} -t ${{ secrets.MANIFESTS_TOKEN }} -m Y
+          .github/workflows/utils//create-pr.sh -s ${{ github.workspace }}/manifests -d . -r ${{ secrets.MANIFESTS_REPO }} -b dev -i ${{ github.run_number }} -t ${{ secrets.MANIFESTS_TOKEN }} -m N
     
   Deploy_To_Stage:
       runs-on: ubuntu-latest
